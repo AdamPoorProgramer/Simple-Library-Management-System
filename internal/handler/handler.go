@@ -2,6 +2,7 @@ package handler
 
 import (
 	"LIBRARY-API-SERVER/api/model"
+	"LIBRARY-API-SERVER/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -12,11 +13,15 @@ type Model interface {
 	TableName() string
 }
 type Handler[T Model] struct {
+	*logger.Logger
 	db *gorm.DB
 }
 
-func NewHandler[T Model](db *gorm.DB) Handler[T] {
-	return Handler[T]{db: db}
+func NewHandler[T Model](db *gorm.DB, log *logger.Logger) Handler[T] {
+	return Handler[T]{
+		db:     db,
+		Logger: log,
+	}
 }
 
 func (h Handler[T]) Post(c *gin.Context) {
@@ -84,7 +89,7 @@ func (h Handler[T]) Delete(c *gin.Context) {
 	c.JSON(200, gin.H{"message": modelInstance.TableName() + "has been deleted"})
 }
 
-func (h Handler[T]) Register(router *gin.RouterGroup) {
+func (h Handler[T]) Register(router *gin.RouterGroup, log *logger.Logger) {
 	router.GET("/"+T.TableName(nil)+"/:id", h.GetById)
 	router.GET("/"+T.TableName(nil), h.GetAllMembers)
 	router.POST("/"+T.TableName(nil), h.Post)

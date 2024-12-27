@@ -9,9 +9,14 @@ type Server struct {
 	URL string `env:"URL"`
 }
 
+type Log struct {
+	Level string `env:"LOG_LEVEL"`
+}
+
 type Config struct {
 	Sqlite
 	Server
+	Log
 }
 
 func LoadConfig() *Config {
