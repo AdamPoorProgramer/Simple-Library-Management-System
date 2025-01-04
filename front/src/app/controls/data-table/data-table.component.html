@@ -1,1 +1,12 @@
-<p>data-table works!</p>
+<table>
+  <thead>
+    <th *ngFor="let field of Fields">{{ field.Title }}</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of Data">
+      <td *ngFor="let field of Fields">
+        {{ field.Content(row) }}
+      </td>
+    </tr>
+  </tbody>
+</table>
