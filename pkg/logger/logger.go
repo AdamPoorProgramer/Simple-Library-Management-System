@@ -27,7 +27,11 @@ type Logger struct {
 func NewLogger(logLevel ...zapcore.Level) (*Logger, error) {
 	tempLogger := temporaryLogger()
 	if len(logLevel) == 0 {
-		configLogLevel, err := zapcore.ParseLevel(strings.ToLower(configs.LoadConfig().Level))
+		temp, err := configs.LoadConfig()
+		if err != nil {
+			return nil, err
+		}
+		configLogLevel, err := zapcore.ParseLevel(strings.ToLower(temp.Logging.Level))
 		if err != nil {
 			return nil, err
 		}

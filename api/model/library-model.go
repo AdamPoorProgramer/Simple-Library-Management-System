@@ -7,11 +7,12 @@ import (
 
 type Book struct {
 	gorm.Model
-	Title     string
-	Author    string
-	Publisher string
-	Year      uint
-	Genre     string
+	Title     string     `json:"title"`
+	Author    string     `json:"author"`
+	Publisher string     `json:"publisher"`
+	Year      uint       `json:"year"`
+	Genre     string     `json:"genre"`
+	Category  []Category `gorm:"many2many:book_category;" json:"categories"`
 }
 
 func (book Book) TableName() string {
@@ -20,11 +21,11 @@ func (book Book) TableName() string {
 
 type Member struct {
 	gorm.Model
-	FirstName   string
-	LastName    string
-	PhoneNumber string
-	Email       string
-	JoinDate    time.Time
+	FirstName   string    `json:"first_name"`
+	LastName    string    `json:"last_name"`
+	PhoneNumber string    `json:"phone_number"`
+	Email       string    `json:"email"`
+	JoinDate    time.Time `json:"join_date"`
 }
 
 func (member Member) TableName() string {
@@ -33,11 +34,13 @@ func (member Member) TableName() string {
 
 type Borrowing struct {
 	gorm.Model
-	Member     Member
-	Book       Book
-	BorrowDate time.Time
-	ReturnDate time.Time
-	Returned   bool
+	BookId     uint       `json:"book_id"`
+	MemberId   uint       `json:"member_id"`
+	Member     Member     `gorm:"foreignKey:MemberId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"member"`
+	Book       Book       `gorm:"foreignKey:BookId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"book"`
+	BorrowDate time.Time  `json:"borrow_date"`
+	ReturnDate *time.Time `json:"return_date,omitempty"`
+	Returned   bool       `json:"returned"`
 }
 
 func (borrowing Borrowing) TableName() string {
@@ -46,19 +49,10 @@ func (borrowing Borrowing) TableName() string {
 
 type Category struct {
 	gorm.Model
-	Name string
+	Name string `json:"name"`
+	Book []Book `gorm:"many2many:book_category;" json:"books"`
 }
 
 func (category Category) TableName() string {
 	return "category"
-}
-
-type BookCategory struct {
-	gorm.Model
-	Book     Book
-	Category Category
-}
-
-func (bookCategory BookCategory) TableName() string {
-	return "book_category"
 }

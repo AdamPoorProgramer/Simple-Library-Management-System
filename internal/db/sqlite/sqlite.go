@@ -1,15 +1,15 @@
 package sqlite
 
 import (
-	"LIBRARY-API-SERVER/configs"
+	"fmt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func NewSQLiteOrPanic(cnf configs.Sqlite) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(cnf.Path), &gorm.Config{})
+func NewSQLiteOrPanic() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("library.db"), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		fmt.Print(err.Error())
 	}
 	return db
 }

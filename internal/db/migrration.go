@@ -6,5 +6,5 @@ import (
 )
 
 func Migrate(db *gorm.DB) (err error) {
-	return db.AutoMigrate(&model.Book{}, &model.Borrowing{}, &model.Member{}, &model.Category{}, &model.BookCategory{})
+	return db.AutoMigrate(&model.Book{}, &model.Borrowing{}, &model.Member{}, &model.Category{})
 }

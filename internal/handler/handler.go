@@ -17,8 +17,8 @@ type Handler[T Model] struct {
 	db *gorm.DB
 }
 
-func NewHandler[T Model](db *gorm.DB, log *logger.Logger) Handler[T] {
-	return Handler[T]{
+func NewHandler[T Model](db *gorm.DB, log *logger.Logger) *Handler[T] {
+	return &Handler[T]{
 		db:     db,
 		Logger: log,
 	}

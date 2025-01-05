@@ -1,28 +1,42 @@
 package configs
 
-import "github.com/caarlos0/env/v6"
-
-type Sqlite struct {
-	Path string `env:"PATH"`
-}
-type Server struct {
-	URL string `env:"URL"`
-}
-
-type Log struct {
-	Level string `env:"LOG_LEVEL"`
-}
+import (
+	"encoding/json"
+	"io"
+	"os"
+)
 
 type Config struct {
-	Sqlite
-	Server
-	Log
+	Server struct {
+		Host string `json:"host"`
+		Port string `json:"port"`
+		Mode string `json:"mode"`
+	} `json:"server"`
+	Database struct {
+		Name string `json:"name"`
+	} `json:"database"`
+	Logging struct {
+		Level string `json:"level"`
+	} `json:"logging"`
 }
 
-func LoadConfig() *Config {
-	var config *Config = new(Config)
-	if err := env.Parse(config); err != nil {
-		panic(err)
+// LoadConfig reads the config file and unmarshals it into the Config struct
+func LoadConfig() (*Config, error) {
+	file, err := os.Open("E:\\go-projects\\LIBRARY-API-SERVER\\configs\\config.json")
+	if err != nil {
+		return nil, err
 	}
-	return config
+	defer file.Close()
+
+	byteValue, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	var config Config
+	if err := json.Unmarshal(byteValue, &config); err != nil {
+		return nil, err
+	}
+
+	return &config, nil
 }
