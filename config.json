@@ -8,6 +8,7 @@
     "name" : "Library.db"
   },
   "logging": {
-    "level": "debug"
+    "level": "debug",
+    "path": "./logs"
   }
 }

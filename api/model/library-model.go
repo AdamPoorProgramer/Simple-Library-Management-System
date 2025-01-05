@@ -5,8 +5,15 @@ import (
 	"time"
 )
 
+type CustomModel struct {
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+}
 type Book struct {
-	gorm.Model
+	CustomModel
+	ID        int        `gorm:"primary_key" json:"id"`
 	Title     string     `json:"title"`
 	Author    string     `json:"author"`
 	Publisher string     `json:"publisher"`
@@ -20,7 +27,7 @@ func (book Book) TableName() string {
 }
 
 type Member struct {
-	gorm.Model
+	CustomModel
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
 	PhoneNumber string    `json:"phone_number"`
@@ -33,7 +40,7 @@ func (member Member) TableName() string {
 }
 
 type Borrowing struct {
-	gorm.Model
+	CustomModel
 	BookId     uint       `json:"book_id"`
 	MemberId   uint       `json:"member_id"`
 	Member     Member     `gorm:"foreignKey:MemberId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"member"`
@@ -48,7 +55,7 @@ func (borrowing Borrowing) TableName() string {
 }
 
 type Category struct {
-	gorm.Model
+	CustomModel
 	Name string `json:"name"`
 	Book []Book `gorm:"many2many:book_category;" json:"books"`
 }

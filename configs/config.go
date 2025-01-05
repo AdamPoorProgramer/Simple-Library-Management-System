@@ -17,12 +17,13 @@ type Config struct {
 	} `json:"database"`
 	Logging struct {
 		Level string `json:"level"`
+		Path  string `json:"path"`
 	} `json:"logging"`
 }
 
 // LoadConfig reads the config file and unmarshals it into the Config struct
 func LoadConfig() (*Config, error) {
-	file, err := os.Open("E:\\go-projects\\LIBRARY-API-SERVER\\configs\\config.json")
+	file, err := os.Open("./config.json")
 	if err != nil {
 		return nil, err
 	}

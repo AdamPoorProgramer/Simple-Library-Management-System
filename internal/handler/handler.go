@@ -5,6 +5,7 @@ import (
 	"LIBRARY-API-SERVER/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"strconv"
 )
@@ -28,71 +29,90 @@ func (h Handler[T]) Post(c *gin.Context) {
 	var modelInstance T
 	if err := c.ShouldBindJSON(&modelInstance); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
+		h.Logger.Error("Error occurred while binding JSON.", zap.Error(err))
 		return
 	}
 	if err := h.db.Create(&modelInstance).Error; err != nil {
 		c.JSON(500, gin.H{"error": "failed to create " + modelInstance.TableName()})
+		h.Logger.Error("Error occurred while creating record.", zap.Error(err))
 		return
 	}
 	s := fmt.Sprintf("%s created successfully", modelInstance.TableName())
 	c.JSON(200, gin.H{"message": s, modelInstance.TableName(): modelInstance})
+	h.Logger.Info("Record created successfully.", zap.String(modelInstance.TableName(), fmt.Sprintf("%+v", modelInstance)))
 }
 func (h Handler[T]) GetAllMembers(c *gin.Context) {
 	var models []T
+	var modelInstance T
 	if err := h.db.Find(&models).Error; err != nil {
-		c.JSON(500, gin.H{"error": "failed to get " + T.TableName(nil)})
+		c.JSON(500, gin.H{"error": "failed to get records"})
+		h.Logger.Error("Error occurred while getting records.", zap.Error(err))
 		return
 	}
-	c.JSON(200, gin.H{T.TableName(nil): models})
+	c.JSON(200, gin.H{modelInstance.TableName(): models})
+	h.Logger.Info("Records retrieved successfully.")
 }
 func (h Handler[T]) GetById(c *gin.Context) {
 	var modelInstance T
 	id, err := strconv.ParseUint(c.Params.ByName("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid ID"})
+		h.Logger.Error("Error occurred while parsing ID.", zap.Error(err))
 		return
 	}
 	if err := h.db.Where("ID = ?", id).First(&modelInstance).Error; err != nil {
-		c.JSON(404, gin.H{"error": T.TableName(nil) + " not found"})
+		c.JSON(404, gin.H{"error": modelInstance.TableName() + " not found"})
+		h.Logger.Error("Error occurred while getting record by ID.", zap.Error(err))
 		return
 	}
-	c.JSON(200, gin.H{T.TableName(nil): modelInstance})
+	c.JSON(200, gin.H{modelInstance.TableName(): modelInstance})
+	h.Logger.Info("Record retrieved successfully by ID.", zap.String(modelInstance.TableName(), fmt.Sprintf("%+v", modelInstance)))
 }
 func (h Handler[T]) Put(c *gin.Context) {
 	var modelInstance T
 	id, err := strconv.ParseUint(c.Params.ByName("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid ID"})
+		h.Logger.Error("Error occurred while parsing ID.", zap.Error(err))
 		return
 	}
 	if err := c.ShouldBindJSON(&modelInstance); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
+		h.Logger.Error("Error occurred while binding JSON.", zap.Error(err))
 		return
 	}
 	if err := h.db.Model(&model.Member{}).Where("ID = ?", id).Updates(&modelInstance).Error; err != nil {
-		c.JSON(500, gin.H{"error": "failed to update " + T.TableName(nil)})
+		c.JSON(500, gin.H{"error": "failed to update " + modelInstance.TableName()})
+		h.Logger.Error("Error occurred while updating record by ID.", zap.Error(err))
 		return
 	}
 	c.JSON(200, gin.H{"message": modelInstance.TableName() + " hs been updated", modelInstance.TableName(): modelInstance})
+	h.Logger.Info("Record updated successfully by ID.", zap.String(modelInstance.TableName(), fmt.Sprintf("%+v", modelInstance)))
 }
 func (h Handler[T]) Delete(c *gin.Context) {
 	var modelInstance T
 	id, err := strconv.ParseUint(c.Params.ByName("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid ID"})
+		h.Logger.Error("Error occurred while parsing ID.", zap.Error(err))
 		return
 	}
 	if err := h.db.Where("ID =?", id).Delete(&modelInstance).Error; err != nil {
 		c.JSON(500, gin.H{"error": "failed to delete " + modelInstance.TableName()})
+		h.Logger.Error("Error occurred while deleting record by ID.", zap.Error(err))
 		return
 	}
 	c.JSON(200, gin.H{"message": modelInstance.TableName() + "has been deleted"})
+	h.Logger.Info("Record deleted successfully by ID.", zap.String(modelInstance.TableName(), fmt.Sprintf("%+v", modelInstance)))
 }
 
-func (h Handler[T]) Register(router *gin.RouterGroup, log *logger.Logger) {
-	router.GET("/"+T.TableName(nil)+"/:id", h.GetById)
-	router.GET("/"+T.TableName(nil), h.GetAllMembers)
-	router.POST("/"+T.TableName(nil), h.Post)
-	router.PUT("/"+T.TableName(nil)+"/:id", h.Put)
-	router.DELETE("/"+T.TableName(nil)+"/:id", h.Delete)
+func (h Handler[T]) Register(router *gin.RouterGroup) {
+	var modelInstance T
+	tableName := modelInstance.TableName()
+	router.GET("/"+tableName+"/:id", h.GetById)
+	router.GET("/"+tableName, h.GetAllMembers)
+	router.POST("/"+tableName, h.Post)
+	router.PUT("/"+tableName+"/:id", h.Put)
+	router.DELETE("/"+tableName+"/:id", h.Delete)
+	h.Logger.Info("Routes registered for " + tableName)
 }

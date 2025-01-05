@@ -13,8 +13,10 @@ func SetupRoutes(db *gorm.DB, router *gin.Engine, log *logger.Logger) {
 	bookApiRouter := apiRouter.Group("/book")
 	memberApiRouter := apiRouter.Group("/book")
 	categoryApiRouter := apiRouter.Group("/book")
+	borrowingApiRouter := apiRouter.Group("/book")
 
-	handler.NewBorrowingHandler[model.Book](db, log).Register(bookApiRouter, log)
-	handler.NewBorrowingHandler[model.Member](db, log).Register(memberApiRouter, log)
-	handler.NewBorrowingHandler[model.Category](db, log).Register(categoryApiRouter, log)
+	handler.NewHandler[model.Book](db, log).Register(bookApiRouter)
+	handler.NewHandler[model.Member](db, log).Register(memberApiRouter)
+	handler.NewHandler[model.Category](db, log).Register(categoryApiRouter)
+	handler.NewHandler[model.Borrowing](db, log).Register(borrowingApiRouter)
 }
