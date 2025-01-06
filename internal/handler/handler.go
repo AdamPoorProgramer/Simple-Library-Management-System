@@ -2,7 +2,6 @@ package handler
 
 import (
 	"LIBRARY-API-SERVER/api/model"
-	"LIBRARY-API-SERVER/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -14,11 +13,11 @@ type Model interface {
 	TableName() string
 }
 type Handler[T Model] struct {
-	*logger.Logger
+	*zap.Logger
 	db *gorm.DB
 }
 
-func NewHandler[T Model](db *gorm.DB, log *logger.Logger) *Handler[T] {
+func NewHandler[T Model](db *gorm.DB, log *zap.Logger) *Handler[T] {
 	return &Handler[T]{
 		db:     db,
 		Logger: log,
@@ -109,10 +108,10 @@ func (h Handler[T]) Delete(c *gin.Context) {
 func (h Handler[T]) Register(router *gin.RouterGroup) {
 	var modelInstance T
 	tableName := modelInstance.TableName()
-	router.GET("/"+tableName+"/:id", h.GetById)
-	router.GET("/"+tableName, h.GetAllMembers)
-	router.POST("/"+tableName, h.Post)
-	router.PUT("/"+tableName+"/:id", h.Put)
-	router.DELETE("/"+tableName+"/:id", h.Delete)
+	router.GET("/:id", h.GetById)
+	router.GET("", h.GetAllMembers)
+	router.POST("", h.Post)
+	router.PUT("/:id", h.Put)
+	router.DELETE("/:id", h.Delete)
 	h.Logger.Info("Routes registered for " + tableName)
 }

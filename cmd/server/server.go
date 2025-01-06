@@ -18,14 +18,12 @@ import (
 )
 
 func main() {
-	log, err := logger.NewLogger(zap.DebugLevel)
-	if err != nil {
-		panic(err)
-	}
+	log := logger.NewLogger(zap.DebugLevel)
 	config, err := configs.LoadConfig()
 	if err != nil {
 		log.Fatal("Failed to load config", zap.Error(err))
 	}
+	gin.DefaultWriter = zap.NewStdLog(log).Writer()
 	server := gin.Default()
 	dataBase := sqlite.NewSQLiteOrPanic(log)
 	err = db.Migrate(dataBase)

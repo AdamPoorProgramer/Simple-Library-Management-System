@@ -2,12 +2,12 @@ package sqlite
 
 import (
 	"LIBRARY-API-SERVER/configs"
-	"LIBRARY-API-SERVER/pkg/logger"
+	"go.uber.org/zap"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func NewSQLiteOrPanic(log *logger.Logger) *gorm.DB {
+func NewSQLiteOrPanic(log *zap.Logger) *gorm.DB {
 	config, err := configs.LoadConfig()
 	if err != nil {
 		log.Fatal(err.Error())
