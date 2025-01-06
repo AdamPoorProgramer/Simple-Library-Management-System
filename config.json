@@ -1,0 +1,14 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": "8080",
+    "mode": "debug"
+  },
+  "database": {
+    "name" : "Library.db"
+  },
+  "logging": {
+    "level": "debug",
+    "path": "./logs"
+  }
+}
