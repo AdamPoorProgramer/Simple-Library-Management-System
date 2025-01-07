@@ -10,7 +10,6 @@ type Config struct {
 	Server struct {
 		Host string `json:"host"`
 		Port string `json:"port"`
-		Mode string `json:"mode"`
 	} `json:"server"`
 	Database struct {
 		Name string `json:"name"`

@@ -13,7 +13,6 @@ type CustomModel struct {
 }
 type Book struct {
 	CustomModel
-	ID        int        `gorm:"primary_key" json:"id"`
 	Title     string     `json:"title"`
 	Author    string     `json:"author"`
 	Publisher string     `json:"publisher"`

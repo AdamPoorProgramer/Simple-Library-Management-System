@@ -9,6 +9,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
@@ -25,6 +26,11 @@ func main() {
 	}
 	gin.DefaultWriter = zap.NewStdLog(log).Writer()
 	server := gin.Default()
+	server.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Origin", "Content-Type"},
+	}))
 	dataBase := sqlite.NewSQLiteOrPanic(log)
 	err = db.Migrate(dataBase)
 	if err != nil {

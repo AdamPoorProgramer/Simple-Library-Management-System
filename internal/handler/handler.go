@@ -69,7 +69,7 @@ func (h Handler[T]) GetById(c *gin.Context) {
 }
 func (h Handler[T]) Put(c *gin.Context) {
 	var modelInstance T
-	id, err := strconv.ParseUint(c.Params.ByName("id"), 10, 64)
+	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid ID"})
 		h.Logger.Error("Error occurred while parsing ID.", zap.Error(err))
@@ -90,7 +90,7 @@ func (h Handler[T]) Put(c *gin.Context) {
 }
 func (h Handler[T]) Delete(c *gin.Context) {
 	var modelInstance T
-	id, err := strconv.ParseUint(c.Params.ByName("id"), 10, 64)
+	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid ID"})
 		h.Logger.Error("Error occurred while parsing ID.", zap.Error(err))
@@ -101,7 +101,7 @@ func (h Handler[T]) Delete(c *gin.Context) {
 		h.Logger.Error("Error occurred while deleting record by ID.", zap.Error(err))
 		return
 	}
-	c.JSON(200, gin.H{"message": modelInstance.TableName() + "has been deleted"})
+	c.JSON(200, gin.H{"message": modelInstance.TableName() + " has been deleted"})
 	h.Logger.Info("Record deleted successfully by ID.", zap.String(modelInstance.TableName(), fmt.Sprintf("%+v", modelInstance)))
 }
 
@@ -111,7 +111,7 @@ func (h Handler[T]) Register(router *gin.RouterGroup) {
 	router.GET("/:id", h.GetById)
 	router.GET("", h.GetAllMembers)
 	router.POST("", h.Post)
-	router.PUT("/:id", h.Put)
-	router.DELETE("/:id", h.Delete)
+	router.PUT("/", h.Put)
+	router.DELETE("/", h.Delete)
 	h.Logger.Info("Routes registered for " + tableName)
 }

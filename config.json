@@ -1,8 +1,7 @@
 {
   "server": {
     "host": "localhost",
-    "port": "8080",
-    "mode": "debug"
+    "port": "8080"
   },
   "database": {
     "name" : "Library.db"
