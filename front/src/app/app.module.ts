@@ -9,6 +9,7 @@ import { MemberComponent } from './pages/member/member.component';
 import { BorrowingComponent } from './pages/borrowing/borrowing.component';
 import { PageComponent } from './controls/page/page.component';
 import { DataTableComponent } from './controls/data-table/data-table.component';
+import { DialogComponent } from './controls/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { DataTableComponent } from './controls/data-table/data-table.component';
     BorrowingComponent,
     PageComponent,
     DataTableComponent,
+    DialogComponent,
   ],
   imports: [BrowserModule, NgbModule, AppRoutingModule],
   providers: [],

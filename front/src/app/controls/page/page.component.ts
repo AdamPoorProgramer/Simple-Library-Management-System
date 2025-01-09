@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page',
@@ -10,4 +11,7 @@ import { Component, Input } from '@angular/core';
 export class PageComponent {
   @Input({ required: true })
   Title?: string;
+
+  @Input({ required: false })
+  TitleTemplate?: TemplateRef<any>;
 }

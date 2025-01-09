@@ -6,4 +6,15 @@ import { Component } from '@angular/core';
   templateUrl: './member.component.html',
   styleUrl: './member.component.scss',
 })
-export class MemberComponent {}
+export class MemberComponent {
+  fields = [
+    {
+      Title: 'Value1111111111111111111111',
+      Content(v: string) {
+        return v;
+      },
+    },
+  ];
+
+  data = ['hi', 'bye'];
+}

@@ -1,12 +1,4 @@
-export interface Api<T> {
-  GetAll(): T[];
-  Get(id: number): T;
-  Post(data: T): boolean;
-  Put(id: number, data: T): boolean;
-  Delete(id: number): boolean;
-}
-
-export interface Field<T> {
+export interface Field<in T, out V> {
   Title: string;
-  Content(input: T) : any;
+  Content(input: T): V;
 }
