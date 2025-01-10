@@ -3,17 +3,17 @@ package router
 import (
 	"LIBRARY-API-SERVER/api/model"
 	"LIBRARY-API-SERVER/internal/handler"
-	"LIBRARY-API-SERVER/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
-func SetupRoutes(db *gorm.DB, router *gin.Engine, log *logger.Logger) {
+func SetupRoutes(db *gorm.DB, router *gin.Engine, log *zap.Logger) {
 	apiRouter := router.Group("/api")
 	bookApiRouter := apiRouter.Group("/book")
-	memberApiRouter := apiRouter.Group("/book")
-	categoryApiRouter := apiRouter.Group("/book")
-	borrowingApiRouter := apiRouter.Group("/book")
+	memberApiRouter := apiRouter.Group("/member")
+	categoryApiRouter := apiRouter.Group("/category")
+	borrowingApiRouter := apiRouter.Group("/borrowing")
 
 	handler.NewHandler[model.Book](db, log).Register(bookApiRouter)
 	handler.NewHandler[model.Member](db, log).Register(memberApiRouter)
