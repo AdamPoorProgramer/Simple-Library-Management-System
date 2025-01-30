@@ -9,6 +9,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
@@ -25,6 +26,20 @@ func main() {
 	}
 	gin.DefaultWriter = zap.NewStdLog(log).Writer()
 	server := gin.Default()
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"}, // دامنه مجاز
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+
+	server.OPTIONS("/*path", func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*") // یا مقدار خاص
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
+		c.Status(http.StatusOK)
+	})
+
 	dataBase := sqlite.NewSQLiteOrPanic(log)
 	err = db.Migrate(dataBase)
 	if err != nil {
@@ -64,9 +79,9 @@ func main() {
 			if err := httpServer.Shutdown(ctx); err != nil {
 				log.Fatal("Server forced to shutdown:", zap.Error(err))
 			}
-			log.Info("Server exited.")
+			log.Info("The server has been successfully shut down.")
 			break
 		}
-		fmt.Println("wrong command")
+		fmt.Println("Unknown command")
 	}
 }

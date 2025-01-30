@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/gin-contrib/cors v1.7.3
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-chi/cors v1.2.1
 	go.uber.org/zap v1.27.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
