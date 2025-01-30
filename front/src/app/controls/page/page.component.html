@@ -1,11 +1,13 @@
-<h1>
-  {{ Title }}
-  <ng-container
-    *ngIf="TitleTemplate"
-    class="tmp"
-    [ngTemplateOutlet]="TitleTemplate"
-  ></ng-container>
-</h1>
-<div>
-  <ng-content></ng-content>
+<div class="container">
+  <h1>
+    {{ Title }}
+    <ng-container
+      *ngIf="TitleTemplate"
+      class="tmp"
+      [ngTemplateOutlet]="TitleTemplate"
+    ></ng-container>
+  </h1>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
 </div>

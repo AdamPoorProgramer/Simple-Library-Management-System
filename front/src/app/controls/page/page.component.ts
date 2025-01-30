@@ -1,10 +1,8 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page',
   standalone: false,
-
   templateUrl: './page.component.html',
   styleUrl: './page.component.scss',
 })

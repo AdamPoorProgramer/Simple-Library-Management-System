@@ -1,1 +1,43 @@
-<p>borrowing works!</p>
+<app-data-table
+  Title="Borrowings"
+  [TitleField]="BorrowingComponent.BorrowingTitleField"
+  [Fields]="BorrowingComponent.BorrowingFields"
+  [FormControls]="BorrowingComponent.BorrowingFormControls"
+  TPath="borrowing"
+>
+  <div class="form-group">
+    <label for="member">Member</label>
+    <input
+      id="member"
+      type="number"
+      class="form-control"
+      [formControl]="BorrowingComponent.BorrowingFormControls['member_id']"
+    />
+    <label for="book">Book</label>
+    <input
+      id="book"
+      type="number"
+      class="form-control"
+      [formControl]="BorrowingComponent.BorrowingFormControls['book_id']"
+    />
+    <label for="borrow_date">Borrow date</label>
+    <app-date-picker
+      id="borrow_date"
+      [formControl]="BorrowingComponent.BorrowingFormControls['borrow_date']"
+    ></app-date-picker>
+    <label for="returned" class="form-check-label">Is returned</label>
+    <br />
+    <input
+      id="returned"
+      class="form-check-input"
+      type="checkbox"
+      [formControl]="BorrowingComponent.BorrowingFormControls['returned']"
+    />
+    <br />
+    <label for="return_date">Return date</label>
+    <app-date-picker
+      id="return_date"
+      [formControl]="BorrowingComponent.BorrowingFormControls['return_date']"
+    ></app-date-picker>
+  </div>
+</app-data-table>

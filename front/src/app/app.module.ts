@@ -10,6 +10,15 @@ import { BorrowingComponent } from './pages/borrowing/borrowing.component';
 import { PageComponent } from './controls/page/page.component';
 import { DataTableComponent } from './controls/data-table/data-table.component';
 import { DialogComponent } from './controls/dialog/dialog.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { ListViewComponent } from './controls/list-view/list-view.component';
+import { ItemSelectorComponent } from './controls/item-selector/item-selector.component';
+import { DatePickerComponent } from './controls/date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +30,13 @@ import { DialogComponent } from './controls/dialog/dialog.component';
     PageComponent,
     DataTableComponent,
     DialogComponent,
+    CategoryComponent,
+    ListViewComponent,
+    ItemSelectorComponent,
+    DatePickerComponent,
   ],
-  imports: [BrowserModule, NgbModule, AppRoutingModule],
-  providers: [],
+  imports: [BrowserModule, NgbModule, AppRoutingModule, ReactiveFormsModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

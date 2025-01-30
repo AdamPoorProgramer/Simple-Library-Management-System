@@ -1,5 +1,39 @@
 <app-data-table
   Title="Members"
-  [Fields]="fields"
-  [Data]="data"
-></app-data-table>
+  [TitleField]="MemberComponent.MemberTitleField"
+  [Fields]="MemberComponent.MemberFields"
+  [FormControls]="MemberComponent.MemberFormControls"
+  TPath="member"
+>
+  <div class="form-group">
+    <label for="first_name">First name</label>
+    <input
+      id="first_name"
+      class="form-control"
+      [formControl]="MemberComponent.MemberFormControls['first_name']"
+    />
+    <label for="last_name">Last name</label>
+    <input
+      id="last_name"
+      class="form-control"
+      [formControl]="MemberComponent.MemberFormControls['last_name']"
+    />
+    <label for="phone_number">Phone number</label>
+    <input
+      id="phone_number"
+      class="form-control"
+      [formControl]="MemberComponent.MemberFormControls['phone_number']"
+    />
+    <label for="email">Email</label>
+    <input
+      id="email"
+      class="form-control"
+      [formControl]="MemberComponent.MemberFormControls['email']"
+    />
+    <label for="join_date">Join date</label>
+    <app-date-picker
+      id="join_date"
+      [formControl]="MemberComponent.MemberFormControls['join_date']"
+    ></app-date-picker>
+  </div>
+</app-data-table>

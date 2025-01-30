@@ -3,7 +3,7 @@
     viewBox="0 0 20 20"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
-    (click)="Edit.emit(null)"
+    (click)="newItem()"
     class="add"
   >
     <g id="layer1">
@@ -15,34 +15,130 @@
   </svg>
 </ng-template>
 <app-page [Title]="Title" [TitleTemplate]="TitleTemplate">
-  <table width="{{ Math.min(((Fields?.length ?? 0) + 1) * 18, 100) }}vw">
-    <thead>
-      <tr>
-        <th *ngFor="let field of Fields" [title]="field.Title">
-          {{ field.Title }}
-        </th>
-        <th title="Actions">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of Data">
-        <td *ngFor="let field of Fields" [title]="field.Content(row)">
-          {{ field.Content(row) }}
-        </td>
-        <td title="">
-          <button
-            class="bi bi-pen"
-            title="edit"
-            (click)="Edit.emit(IDField?.Content(row))"
-          ></button>
-          <button
-            class="bi bi-trash"
-            title="delete"
-            (click)="deleteItem(row)"
-          ></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <ng-container *ngFor="let field of Fields">
+            <ng-container *ngIf="field.Visible">
+              <th [title]="field.Title" (click)="setSort(field)">
+                {{ field.Title }}
+              </th>
+            </ng-container>
+          </ng-container>
+          <th title="Actions" width="{{ width }}%">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of getSortedDate()">
+          <ng-container *ngFor="let field of Fields">
+            <ng-container *ngIf="field.Visible">
+              <td [title]="field.Content(row) ?? ''">
+                {{ field.Content(row) ?? "" }}
+              </td>
+            </ng-container>
+          </ng-container>
+          <td title="">
+            <button
+              class="bi bi-eye"
+              title="view"
+              (click)="viewItem(row)"
+            ></button>
+            <button
+              class="bi bi-pen"
+              title="edit"
+              (click)="editItem(row)"
+            ></button>
+            <button
+              class="bi bi-trash"
+              title="delete"
+              (click)="deleteItem(row)"
+            ></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </app-page>
-<app-dialog #Dialog></app-dialog>
+<app-dialog
+  #DeleteDialog
+  Title="Confirm Delete"
+  OKButtonClass="btn-danger"
+  OKButtonTitle="Delete"
+>
+  Are you sure you want to delete
+  {{ selectedRow ? TitleField?.Content(selectedRow) : "" }}
+</app-dialog>
+<app-dialog
+  #EditDialog
+  Title="{{ selectedRow ? 'Edit' : 'New' }} Item"
+  OKButtonClass="btn-primary"
+  OKButtonTitle="Save"
+  [OKButtonDisabled]="!formGroup.valid"
+>
+  <form [formGroup]="formGroup">
+    <ng-content></ng-content>
+  </form>
+</app-dialog>
+<app-dialog
+  #ViewDialog
+  Title="View Item"
+  OKButtonClass="btn-primary"
+  CancelButtonClass="d-none"
+  OKButtonTitle="Ok"
+  [OKButtonDisabled]="false"
+>
+  <div class="form-group">
+    <ng-container *ngFor="let field of Fields">
+      <ng-container
+        *ngIf="
+          ['Is returned', 'Books', 'Categories'].indexOf(field.Title) == -1
+        "
+      >
+        <label for="{{ field.Title.toLowerCase().replace(' ', '-') }}">{{
+          field.Title
+        }}</label>
+        <input
+          class="form-control"
+          id="{{ field.Title.toLowerCase().replace(' ', '-') }}"
+          [value]="selectedRow ? field.Content(selectedRow) : ''"
+          disabled
+        />
+      </ng-container>
+      <ng-container *ngIf="field.Title == 'Is returned'">
+        <label for="is-returned" class="form-check-label">Is returned</label>
+        <br />
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="is-returned"
+          [checked]="
+            selectedRow ? field.Content(selectedRow) == 'Returned' : false
+          "
+          disabled
+        />
+        <br />
+      </ng-container>
+      <ng-container *ngIf="field.Title == 'Books'">
+        <label for="books">Books</label>
+        <app-list-view
+          id="books"
+          TPath="book"
+          [TitleField]="BookComponent.BookTitleField"
+          [Value]="selectedRow ? field.Content(selectedRow) : []"
+          [ReadOnly]="true"
+        ></app-list-view>
+      </ng-container>
+      <ng-container *ngIf="field.Title == 'Categories'">
+        <label for="categories">Categories</label>
+        <app-list-view
+          id="categories"
+          TPath="category"
+          [TitleField]="CategoryComponent.CategoryTitleField"
+          [Value]="selectedRow ? field.Content(selectedRow) : []"
+          [ReadOnly]="true"
+        ></app-list-view>
+      </ng-container>
+    </ng-container>
+  </div>
+</app-dialog>

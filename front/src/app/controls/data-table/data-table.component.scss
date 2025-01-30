@@ -1,11 +1,10 @@
-* {
-  font-size: 5vh;
-}
 table {
   border-collapse: separate;
   border-spacing: 0 1vh;
+  max-width: 100%;
+  width: fit-content;
   table-layout: fixed;
-  overflow: scroll;
+  text-wrap: nowrap;
 }
 
 tr {
@@ -19,12 +18,16 @@ td {
   border-radius: 0;
   cursor: default;
   padding: 0 2vw;
-  height: 12vh;
-  width: 18vw;
+  height: 6vh;
+  width: 12vw;
   text-align: center;
-  line-height: 12vh;
+  line-height: 6vh;
   overflow: clip;
   text-overflow: ellipsis;
+}
+
+th {
+  font-size: 3vh;
 }
 
 tr.bi {
@@ -51,7 +54,7 @@ tr:hover {
 td button {
   background: #00000000;
   border: 0;
-  height: 12vh;
+  height: 6vh;
   margin: 0;
 }
 button.add {

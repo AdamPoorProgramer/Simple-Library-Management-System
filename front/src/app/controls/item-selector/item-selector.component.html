@@ -1,0 +1,12 @@
+<select
+  [disabled]="Disabled"
+  (change)="valueChanged()"
+  class="form-select"
+  (focus)="selectorTouched()"
+  #Selector
+>
+  <option value="0">-- Empty --</option>
+  <option value="{{ row.id }}" *ngFor="let row of Data">
+    {{ getContent(row) }}
+  </option>
+</select>

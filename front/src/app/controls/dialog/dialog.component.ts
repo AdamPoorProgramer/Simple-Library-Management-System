@@ -1,11 +1,9 @@
 import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
   AfterViewInit,
-  ViewChild,
+  Component,
   ElementRef,
+  Input,
+  ViewChild,
 } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 
@@ -16,11 +14,17 @@ import * as bootstrap from 'bootstrap';
   styleUrl: './dialog.component.scss',
 })
 export class DialogComponent implements AfterViewInit {
-  @Input() Title?: string;
-  @Input() Message?: string;
-  @ViewChild('Modal') Modal?: ElementRef<HTMLDivElement>;
+  @Input({ required: true }) Title?: string;
 
-  ID?: number;
+  @Input({ required: true }) OKButtonClass?: string;
+
+  @Input({ required: true }) OKButtonTitle?: string;
+
+  @Input() CancelButtonClass: string = '';
+
+  @Input() OKButtonDisabled: boolean = false;
+
+  @ViewChild('Modal') Modal?: ElementRef<HTMLDivElement>;
 
   private modalInstance: any;
   private resolve?(value: boolean): void;
@@ -33,8 +37,7 @@ export class DialogComponent implements AfterViewInit {
     );
   }
 
-  open(id: number) {
-    this.ID = id;
+  open(): Promise<boolean> {
     this.modalInstance.show();
     return new Promise<boolean>((resolve) => (this.resolve = resolve));
   }
