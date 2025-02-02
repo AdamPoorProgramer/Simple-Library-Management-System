@@ -1,0 +1,37 @@
+ul {
+  padding: 0;
+  list-style-type: none;
+  width: fit-content;
+  height: fit-content;
+  max-height: 10vh;
+  overflow-y: scroll;
+}
+
+li {
+  border: 3px solid #90aacb;
+  border-radius: 4vh;
+  cursor: default;
+  margin: 1vh 0;
+  padding: 0 2vw 4vh;
+  background: #f9d5a7;
+  height: 8vh;
+  line-height: 8vh;
+  text-align: center;
+}
+
+.bi {
+  border: 0;
+  background: 0;
+  -webkit-text-stroke: 0.5px #222222;
+  color: #222222;
+}
+
+.bi:hover {
+  -webkit-text-stroke: 1px #90aacb;
+  color: #90aacb;
+}
+
+.bi:active {
+  -webkit-text-stroke: 1px #222222;
+  color: #90aacb;
+}

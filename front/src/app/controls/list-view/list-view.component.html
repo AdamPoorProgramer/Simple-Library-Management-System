@@ -1,0 +1,31 @@
+<div class="row" *ngIf="!ReadOnly">
+  <div class="col-lg-auto">
+    <app-item-selector
+      [TitleField]="TitleField"
+      [TPath]="TPath"
+      (ValueChanged)="selectItem($event)"
+      (focus)="selectorTouched()"
+    ></app-item-selector>
+  </div>
+  <div class="col-sm-auto">
+    <button
+      class="btn btn-primary"
+      (click)="addItem()"
+      (focus)="selectorTouched()"
+    >
+      Add
+    </button>
+  </div>
+</div>
+<ul>
+  <li *ngFor="let row of getSortedValue()">
+    {{ TitleField?.Content(row)
+    }}<button
+      class="bi bi-trash"
+      title="delete"
+      (focus)="selectorTouched()"
+      (click)="deleteItem(row)"
+      *ngIf="!ReadOnly"
+    ></button>
+  </li>
+</ul>

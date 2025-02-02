@@ -1,0 +1,108 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0 1vh;
+  max-width: 100%;
+  width: fit-content;
+  table-layout: fixed;
+  text-wrap: nowrap;
+}
+
+tr {
+  background: #f9d5a7;
+}
+
+th,
+td {
+  border: 3px solid #90aacb;
+  border-right-width: 0;
+  border-radius: 0;
+  cursor: default;
+  padding: 0 2vw;
+  height: 6vh;
+  width: 12vw;
+  text-align: center;
+  line-height: 6vh;
+  overflow: clip;
+  text-overflow: ellipsis;
+}
+
+th {
+  font-size: 3vh;
+}
+
+tr.bi {
+  width: 36vw;
+}
+
+tr th:first-child,
+tr td:first-child {
+  border-top-left-radius: 6vh;
+  border-bottom-left-radius: 6vh;
+}
+
+tr th:last-child,
+tr td:last-child {
+  border-right-width: 3px;
+  border-top-right-radius: 6vh;
+  border-bottom-right-radius: 6vh;
+}
+
+tr:hover {
+  background: #ffb085;
+}
+
+td button {
+  background: #00000000;
+  border: 0;
+  height: 6vh;
+  margin: 0;
+}
+
+button.add {
+  border: 0;
+  padding: 0;
+  width: fit-content;
+  height: fit-content;
+}
+
+svg.add {
+  background: #00000000;
+  width: auto;
+  height: 7vh;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  position: absolute;
+  right: 0;
+}
+
+svg.add path {
+  fill: #222222;
+  fill-opacity: 1;
+  stroke: #222222;
+  stroke-width: 0.2px;
+}
+
+svg.add:hover path {
+  fill: #90aacb;
+  stroke: #90aacb;
+}
+
+svg.add:active path {
+  fill: #90aacb;
+  stroke: #222222;
+}
+
+.bi {
+  -webkit-text-stroke: 0.5px #222222;
+  color: #222222;
+}
+
+.bi:hover {
+  -webkit-text-stroke: 1px #90aacb;
+  color: #90aacb;
+}
+
+.bi:active {
+  -webkit-text-stroke: 1px #222222;
+  color: #90aacb;
+}

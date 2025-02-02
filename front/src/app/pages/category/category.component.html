@@ -1,0 +1,24 @@
+<app-data-table
+  Title="Categories"
+  [TitleField]="CategoryComponent.CategoryTitleField"
+  [Fields]="CategoryComponent.CategoryFields"
+  [FormControls]="CategoryComponent.CategoryFormControls"
+  TPath="category"
+>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input
+      id="name"
+      class="form-control"
+      [formControl]="CategoryComponent.CategoryFormControls['name']"
+    />
+    <label for="books">Books</label>
+    <app-list-view
+      id="books"
+      [TitleField]="BookComponent.BookTitleField"
+      [formControl]="CategoryComponent.CategoryFormControls['books']"
+      TPath="book"
+    >
+    </app-list-view>
+  </div>
+</app-data-table>
