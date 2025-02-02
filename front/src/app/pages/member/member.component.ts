@@ -17,10 +17,7 @@ export class MemberComponent {
   static readonly MemberFormControls: FormControls = {
     first_name: new FormControl('', Validators.required),
     last_name: new FormControl('', Validators.required),
-    phone_number: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^09[0-9]{9}$/),
-    ]),
+    phone_number: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     join_date: new FormControl('', Validators.required),
   };
